@@ -1,4 +1,5 @@
 # Conflict Plan
+September 18, 2020
 
 **What will your group do when it encounters conflict?**
 
