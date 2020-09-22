@@ -1,0 +1,25 @@
+#/usr/bin/python
+# Script:                       301 Final Project Script
+# Author:                       Courtney Hans
+# Date of latest revision:      9/22/2020
+# Purpose:                      Create a new Linux EC2 instance in AWS using boto3 SDK
+
+#import boto3 library
+import boto3
+ec2 = boto3.resource('ec2')
+
+# Main
+
+#create a new EC2 instance using boto3 SDK
+
+instances = ec2.create_instances(
+        ImageId='ami-0841edc20334f9287',
+        MinCount=1,
+        MaxCount=1,
+        InstanceType='t2.micro',
+        KeyName='beta-key'
+)
+
+#resources: blog.ipswitch.com/how-to-create-an-ec2-instance-with-python
+
+# End
