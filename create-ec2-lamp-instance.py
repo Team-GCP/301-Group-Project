@@ -15,6 +15,7 @@ number = input("How many LAMP stacks would you like to create?\n")
 
 #create a new EC2 instance using boto3 SDK
 #ami is for a lamp stack i created and configured in AWS
+#assigns to a security group pre-configured with inbound rules for ports 22, 80, and 443
 
 instances = ec2.create_instances(
         ImageId='ami-0841edc20334f9287',
