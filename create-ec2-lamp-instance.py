@@ -2,7 +2,8 @@
 # Script:                       301 Final Project Script
 # Author:                       Courtney Hans
 # Date of latest revision:      9/23/2020
-# Purpose:                      Create a new Linux EC2 lamp stack instance in $
+# Purpose:                      Create a new Linux EC2 lamp stack instance in AWS using boto3 SDK
+
 #import boto3 library
 import boto3
 ec2 = boto3.resource('ec2')
@@ -15,7 +16,8 @@ number = input("How many LAMP stacks would you like to create?\n")
 
 #create a new EC2 instance using boto3 SDK
 #ami is for a lamp stack i created and configured in AWS
-#assigns to a security group pre-configured with inbound rules for ports 22, 80, and 443
+#security group for Developers configured w/ appropriate permissions (PowerUserAccess)
+#IAM role for Developers configured w/ appropriate AWS console/access permissions
 
 instances = ec2.create_instances(
         ImageId='ami-0841edc20334f9287',
@@ -23,10 +25,13 @@ instances = ec2.create_instances(
         MaxCount=number,
         InstanceType='t2.micro',
         SecurityGroupIds=['sg-08b2201cde476753d',],
+        IamInstanceProfile={
+                'Arn': 'arn:aws:iam::135314874534:instance-profile/Developers'
+        },
         KeyName='beta-key'
 )
 
 print("Building your LAMP stack(s)!")
 #resources: blog.ipswitch.com/how-to-create-an-ec2-instance-with-python
 
-# End 
+# End
