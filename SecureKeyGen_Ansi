@@ -1,0 +1,46 @@
+!/bin/bash
+
+read -p "Enter new username " username
+useradd -m -s /bin/bash $username
+passwd $username
+
+echo -e '$username\tALL=(ALL)\tNOPASSWD:\tALL' > /etc/sudoers.d/$username
+
+mkpasswd --method=SHA-512 > 'secret01'
+
+su - $username
+ssh-keygen -t rsa
+
+       # _____________________________________
+########|This is where the key generation ends|####### 
+       #|_____________________________________|
+
+#login as the new user and create a new directory
+su - $username
+mkdir -p ansidir/
+
+# create a new .ini file in the directory and  connect to the host
+cd ansidir
+nano inventory.ini
+
+#read -p "Enter your host ip: " ip1
+#read -p "Enter your second host ip: " ip2
+
+#cat ansi01 ansidir_host=$ip1 > inventory.ini
+#cat ansi02 ansidir_host=$ip2 > inventory.ini
+
+#creating an ansible configuration file
+vim ansible.cfg
+cat > [defaults]
+cat >   inventory = /home/$username/ansible/ansidir/inventory.ini  ansible.cfg
+
+ssh-keyscan $ip1 >> ~/.ssh/known_hosts
+ssh-keyscan $ip2 >> ~/.ssh/known_hosts
+
+#Calling ansible playbook file
+sh ./deploy-ssh.yml
+
+su - $username
+cd ansidir/
+#run ansible playbook
+ansible-playbook deploy-ssh.yml --ask-pass
